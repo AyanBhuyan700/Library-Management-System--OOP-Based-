@@ -32,15 +32,42 @@ class Book:
             "Author": input("Enter the author's name: "),
             "Genre": input("Enter the book genre: "),
             "Publication Year": input("Enter the publication year: "),
+            "Status": "Available" 
     }
         Book.data.append(book_info)
 
         print(f'\n✅ "{book_info["Book Title"]}" has been added successfully!')
         print(f'📖 Book ID: {book_info["Book ID"]}')
+        print(f'📚 Status: {book_info["Status"]}')
 
         Book.__update()
 
-User = Book()
+    def borrow_book(self):
+        author_name = input("Enter the author's name: ")
+        book_id = int(input("Enter the book ID: "))
+
+        book_data  = [x for x in Book.data if x["Author"] == author_name and x["Book ID"] == book_id]
+
+        if not book_data:
+            print("No matching book was found.")
+            return
+
+        if book_data[0]["Status"] == "Unavailable":
+            print("Sorry, this book is currently unavailable.")
+            return
+        
+        borrow_days = int(input("Enter the number of days you want to borrow the book: "))
+
+        book_data[0]["Status"] = "Unavailable"
+        book_data[0]["Borrow Days"] = borrow_days
+
+        print(f'✅ You have successfully borrowed "{book_data[0]["Book Title"]}".')
+        print(f'📅 Borrowing Period: {borrow_days} days')
+
+        Book.__update()
+            
+
+library = Book()
 
 print("\n📚 LIBRARY MANAGEMENT SYSTEM 📚")
 print("--------------------------------")
@@ -54,4 +81,7 @@ print("--------------------------------")
 choice = int(input("Enter your choice (1-5): "))
 
 if choice == 1:
-    User.add_book()
+    library.add_book()
+
+if choice == 2:
+    library.borrow_book()
