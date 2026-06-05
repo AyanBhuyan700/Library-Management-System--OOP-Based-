@@ -24,13 +24,14 @@ class Book:
     @classmethod
     def generate_unique_id(cls):
         return random.randint(100000, 999999)
+    
 
     def add_book(self):
         book_info = {
             "Book ID": Book.generate_unique_id(),
-            "Book Title": input("Enter the book title: "),
-            "Author": input("Enter the author's name: "),
-            "Genre": input("Enter the book genre: "),
+            "Book Title": input("Enter the book title: ").capitalize(),
+            "Author": input("Enter the author's name: ").capitalize(),
+            "Genre": input("Enter the book genre: ").capitalize(),
             "Publication Year": input("Enter the publication year: "),
             "Status": "Available" 
     }
@@ -42,8 +43,9 @@ class Book:
 
         Book.__update()
 
+
     def borrow_book(self):
-        author_name = input("Enter the author's name: ")
+        author_name = input("Enter the author's name: ").capitalize()
         book_id = int(input("Enter the book ID: "))
 
         book_data  = [x for x in Book.data if x["Author"] == author_name and x["Book ID"] == book_id]
@@ -65,9 +67,10 @@ class Book:
         print(f'📅 Borrowing Period: {borrow_days} days')
 
         Book.__update()
-            
+
+
     def return_book(self):
-        author_name = input("Enter the author's name: ")
+        author_name = input("Enter the author's name: ").capitalize()
         book_id = int(input("Enter the book ID: "))
 
         book_data  = [x for x in Book.data if x["Author"] == author_name and x["Book ID"] == book_id]
@@ -85,7 +88,27 @@ class Book:
         Book.__update()
 
 
+    def view_books(self):
+        count = 1
+
+        print("\n📚 AVAILABLE BOOKS")
+        print("-" * 40)
+
+        for book in self.data:
+            if book["Status"] == "Available":
+                print(
+                    f"{count}.\n"
+                    f"   📖 Title : {book['Book Title']}\n"
+                    f"   ✍️  Author: {book['Author']}\n"
+                    )
+                count += 1
+
+            if count == 1:
+                print("No books are currently available.")
+
+
 library = Book()
+
 
 print("\n📚 LIBRARY MANAGEMENT SYSTEM 📚")
 print("--------------------------------")
@@ -101,8 +124,17 @@ choice = int(input("Enter your choice (1-5): "))
 if choice == 1:
     library.add_book()
 
-if choice == 2:
+elif choice == 2:
     library.borrow_book()
 
-if choice == 3:
+elif choice == 3:
     library.return_book()
+
+elif choice == 4:
+    library.view_books()
+
+elif choice == 5:
+    print("👋 Thank you for using the Library Management System!")
+
+else:
+    print("❌ Invalid choice. Please enter a number between 1 and 5.")
