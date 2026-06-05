@@ -66,6 +66,24 @@ class Book:
 
         Book.__update()
             
+    def return_book(self):
+        author_name = input("Enter the author's name: ")
+        book_id = int(input("Enter the book ID: "))
+
+        book_data  = [x for x in Book.data if x["Author"] == author_name and x["Book ID"] == book_id]
+
+        if not book_data:
+            print("❌ No matching book was found.")
+            return
+
+        book_data[0]["Status"] = "Available"
+        book_data[0].pop("Borrow Days")
+
+        print(f'✅ "{book_data[0]["Book Title"]}" has been returned successfully.')
+        print("📚 Status: Available")
+
+        Book.__update()
+
 
 library = Book()
 
@@ -85,3 +103,6 @@ if choice == 1:
 
 if choice == 2:
     library.borrow_book()
+
+if choice == 3:
+    library.return_book()
